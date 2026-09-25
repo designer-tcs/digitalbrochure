@@ -441,8 +441,51 @@
 }
 
 .br-board {
-  container-type: size;
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 20%;
+  bottom: 6%;
   z-index: 3;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #fff;
+  container-type: size;
+}
+
+.br-ring {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  border-style: dashed;
+  border-width: 1px;
+}
+
+.br-ring.is-inner {
+  width: 40cqw;
+  border-color: rgba(224, 122, 95, 0.7);
+}
+
+.br-ring.is-mid {
+  width: 64cqw;
+  border-color: rgba(184, 155, 62, 0.75);
+}
+
+.br-ring.is-outer {
+  width: 84cqw;
+  border-color: rgba(63, 107, 69, 0.7);
+}
+
+.br-icon-crop {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 999px;
 }
 
 .br-orbit-logo {

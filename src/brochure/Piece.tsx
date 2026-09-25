@@ -71,7 +71,7 @@ export function IconCrop({
   const l = cx - w / 2;
   const t = cy - h / 2;
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-full">
+    <div className="br-icon-crop">
       <img
         src={src}
         alt=""

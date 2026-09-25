@@ -28,10 +28,10 @@ const DURATION: Record<1 | 2 | 3, string> = { 1: "92s", 2: "118s", 3: "146s" };
 
 export function DayOrbit({ active }: { active: boolean }) {
   return (
-    <div className="br-board absolute inset-x-[5%] top-[20%] bottom-[6%] rounded-[18px] bg-white">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[40cqw] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#e07a5f]/70" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[64cqw] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#b89b3e]/75" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[84cqw] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#3f6b45]/70" />
+    <div className="br-board">
+      <div className="br-ring is-inner" />
+      <div className="br-ring is-mid" />
+      <div className="br-ring is-outer" />
 
       <img className="br-orbit-logo" src={logoMark} alt="Wellsprings Academy" />
 
