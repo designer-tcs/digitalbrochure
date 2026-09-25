@@ -4,23 +4,23 @@ import { IconCrop, pageSrc } from "./Piece";
 const SRC = pageSrc(5);
 
 const NODES: { id: string; label: string; ring: 1 | 2 | 3; angle: number; cx: number; cy: number }[] = [
-  { id: "science", label: "Science labs", ring: 1, angle: 0, cx: 0.515, cy: 0.517 },
-  { id: "library", label: "Library", ring: 1, angle: 60, cx: 0.634, cy: 0.554 },
-  { id: "robotics", label: "Robotics", ring: 1, angle: 120, cx: 0.634, cy: 0.63 },
-  { id: "speaking", label: "Public speaking", ring: 1, angle: 180, cx: 0.516, cy: 0.67 },
-  { id: "computer", label: "Computer lab", ring: 1, angle: 240, cx: 0.398, cy: 0.63 },
-  { id: "vocational", label: "Vocational", ring: 1, angle: 300, cx: 0.411, cy: 0.541 },
-  { id: "art", label: "Art & craft", ring: 2, angle: 30, cx: 0.431, cy: 0.462 },
-  { id: "sports", label: "10+ sports", ring: 2, angle: 90, cx: 0.622, cy: 0.469 },
-  { id: "yoga", label: "Yoga", ring: 2, angle: 150, cx: 0.764, cy: 0.581 },
-  { id: "music", label: "Music", ring: 2, angle: 210, cx: 0.639, cy: 0.71 },
-  { id: "dance", label: "Dance", ring: 2, angle: 270, cx: 0.378, cy: 0.704 },
-  { id: "theatre", label: "Theatre", ring: 2, angle: 330, cx: 0.31, cy: 0.51 },
-  { id: "competitions", label: "Competitions", ring: 3, angle: 180, cx: 0.606, cy: 0.785 },
-  { id: "house", label: "House events", ring: 3, angle: 252, cx: 0.207, cy: 0.693 },
-  { id: "scouts", label: "Scouts & Guides", ring: 3, angle: 324, cx: 0.192, cy: 0.507 },
-  { id: "clubs", label: "Clubs", ring: 3, angle: 36, cx: 0.307, cy: 0.428 },
-  { id: "trips", label: "Field trips", ring: 3, angle: 108, cx: 0.793, cy: 0.464 },
+  { id: "science", label: "Science labs", ring: 1, angle: 0, cx: 0.5158, cy: 0.5157 },
+  { id: "library", label: "Library", ring: 1, angle: 60, cx: 0.6339, cy: 0.554 },
+  { id: "robotics", label: "Robotics", ring: 1, angle: 120, cx: 0.634, cy: 0.6301 },
+  { id: "speaking", label: "Public speaking", ring: 1, angle: 180, cx: 0.5158, cy: 0.6681 },
+  { id: "computer", label: "Computer lab", ring: 1, angle: 240, cx: 0.3978, cy: 0.6302 },
+  { id: "vocational", label: "Vocational", ring: 1, angle: 300, cx: 0.4117, cy: 0.5428 },
+  { id: "art", label: "Art & craft", ring: 2, angle: 30, cx: 0.4309, cy: 0.4622 },
+  { id: "sports", label: "10+ sports", ring: 2, angle: 90, cx: 0.6207, cy: 0.4668 },
+  { id: "yoga", label: "Yoga", ring: 2, angle: 150, cx: 0.7631, cy: 0.5802 },
+  { id: "music", label: "Music", ring: 2, angle: 210, cx: 0.6398, cy: 0.7116 },
+  { id: "dance", label: "Dance", ring: 2, angle: 270, cx: 0.374, cy: 0.7054 },
+  { id: "theatre", label: "Theatre", ring: 2, angle: 330, cx: 0.3128, cy: 0.5122 },
+  { id: "competitions", label: "Competitions", ring: 3, angle: 180, cx: 0.6088, cy: 0.786 },
+  { id: "house", label: "House events", ring: 3, angle: 252, cx: 0.2041, cy: 0.6922 },
+  { id: "scouts", label: "Scouts & Guides", ring: 3, angle: 324, cx: 0.1898, cy: 0.5073 },
+  { id: "clubs", label: "Clubs", ring: 3, angle: 36, cx: 0.3093, cy: 0.4278 },
+  { id: "trips", label: "Field trips", ring: 3, angle: 108, cx: 0.7915, cy: 0.4632 },
 ];
 
 const RADIUS: Record<1 | 2 | 3, string> = { 1: "20cqw", 2: "32cqw", 3: "42cqw" };
@@ -55,7 +55,7 @@ export function DayOrbit({ active }: { active: boolean }) {
               }}
             >
               <span className="br-orbit-icon">
-                <IconCrop src={SRC} cx={node.cx} cy={node.cy} diameter={0.034} />
+                <IconCrop src={SRC} cx={node.cx} cy={node.cy} diameter={0.066} />
               </span>
               <span className="br-orbit-label">{node.label}</span>
             </div>
