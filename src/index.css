@@ -1,0 +1,25 @@
+:root {
+  --ws-ink: #354251;
+  --grey-700: #5f594b;
+  --coral-600: #cf4e3c;
+  --coral-700: #a83a2c;
+  --font-serif: "Lora", Georgia, serif;
+  --font-sans: "Inter", "Helvetica Neue", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #e7dfd2;
+  color: var(--ws-ink);
+  font-family: var(--font-sans);
+}
