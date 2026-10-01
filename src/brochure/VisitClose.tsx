@@ -68,6 +68,10 @@ export function VisitClose() {
           <Phone size={18} strokeWidth={2} />
           +91 63663 61707
         </a>
+        <a className="br-visit-mail" href={`mailto:${SITE_EMAIL}`}>
+          <Mail size={16} strokeWidth={1.8} />
+          {SITE_EMAIL}
+        </a>
         <p className="br-visit-admit">Admissions open for 2027–28</p>
       </div>
 
@@ -84,22 +88,13 @@ export function VisitClose() {
           </a>
         </div>
 
-        <div className="br-visit-split">
-          <div className="br-visit-block">
-            <p className="br-visit-label is-email">Email</p>
-            <a className="br-visit-mail" href={`mailto:${SITE_EMAIL}`}>
-              <Mail size={16} strokeWidth={1.8} />
-              {SITE_EMAIL}
-            </a>
-          </div>
-          <div className="br-visit-block">
-            <p className="br-visit-label is-web">Website</p>
-            <a className="br-visit-link" href={SITE_WEB} target="_blank" rel="noreferrer">
-              <Globe size={16} strokeWidth={1.8} />
-              Visit website
-              <ArrowRight className="br-visit-arrow" size={15} strokeWidth={2} />
-            </a>
-          </div>
+        <div className="br-visit-block">
+          <p className="br-visit-label is-web">Website</p>
+          <a className="br-visit-link" href={SITE_WEB} target="_blank" rel="noreferrer">
+            <Globe size={16} strokeWidth={1.8} />
+            Visit website
+            <ArrowRight className="br-visit-arrow" size={15} strokeWidth={2} />
+          </a>
         </div>
 
         <div className="br-visit-block">

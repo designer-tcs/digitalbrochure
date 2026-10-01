@@ -34,25 +34,92 @@
   color: var(--ws-ink);
 }
 
-.br-scroll {
+.br-deck {
   height: 100%;
-  overflow-y: auto;
-  scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 3.5rem 3.2rem;
   background: #e7dfd2;
+  touch-action: none;
+}
+
+.br-turn {
+  position: relative;
+  perspective: 1600px;
+  transform-style: preserve-3d;
+}
+
+.br-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.br-cast {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--shade, 0);
+}
+
+.br-cast.is-next {
+  background: linear-gradient(to left, rgba(36, 22, 10, 0.34), transparent 58%);
+}
+
+.br-cast.is-prev {
+  background: linear-gradient(to right, rgba(36, 22, 10, 0.34), transparent 58%);
+}
+
+.br-leaf {
+  position: relative;
+  z-index: 1;
+  transform-style: preserve-3d;
+  transform-origin: right center;
+  will-change: transform;
+}
+
+.br-leaf-front,
+.br-leaf-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.br-leaf-front {
+  position: relative;
+  transform: translateZ(0.4px);
+}
+
+.br-leaf-back {
+  position: absolute;
+  inset: 0;
+  background: #f7f3ea;
+  transform: rotateY(180deg) translateZ(0.4px);
+}
+
+.br-leaf-light {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: var(--shade, 0);
+  background: linear-gradient(90deg, rgba(255, 248, 236, 0.2), transparent 34%, rgba(28, 16, 8, 0.16));
 }
 
 .br-scene {
   position: relative;
   display: flex;
   min-height: 100%;
-  scroll-snap-align: center;
-  scroll-snap-stop: normal;
   align-items: center;
   justify-content: center;
   padding: 4.5rem 3.5rem 3.2rem;
-  opacity: 0.72;
-  transition: opacity 700ms ease;
+  opacity: 1;
+}
+
+.br-scene.is-leaf {
+  min-height: 0;
+  padding: 0;
 }
 
 .br-scene.is-in {
@@ -85,6 +152,11 @@
 .br-scene.is-in .br-veil {
   animation: br-unveil 980ms cubic-bezier(0.22, 0.7, 0.2, 1) forwards;
   animation-delay: var(--d, 0ms);
+}
+
+.br-scene.is-seen .br-veil {
+  animation: none;
+  opacity: 0;
 }
 
 .br-card {
@@ -269,9 +341,20 @@
   transform: translateY(0) scale(0.98);
 }
 
+.br-visit-hero .br-visit-mail {
+  color: #f7f3ea;
+  font-size: 2.7cqw;
+  font-weight: 500;
+}
+
+.br-visit-hero .br-visit-mail:hover,
+.br-visit-hero .br-visit-mail:focus-visible {
+  color: #fff;
+}
+
 .br-visit-admit {
   align-self: flex-start;
-  margin: 0.4cqw 0 0;
+  margin: 1.6cqw 0 0;
   border: 0.35cqw solid #e4c84a;
   padding: 1.5cqw 2.4cqw;
   color: #e4c84a;
@@ -375,16 +458,11 @@
   opacity: 0.82;
 }
 
-.br-visit-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3cqw;
-}
-
 .br-visit-social {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5cqw 1.5cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6cqw;
   width: 100%;
 }
 
@@ -442,13 +520,12 @@
 
 .br-board {
   position: absolute;
-  left: 5%;
-  right: 5%;
-  top: 20%;
-  bottom: 6%;
+  left: 2%;
+  right: 2%;
+  top: 26%;
+  bottom: 4.2%;
   z-index: 3;
-  border-radius: 18px;
-  background: #fff;
+  background: none;
   container-type: size;
 }
 
@@ -585,6 +662,7 @@
 }
 
 @media (max-width: 720px) {
+  .br-deck { padding: 3.4rem 0.7rem 2.6rem; }
   .br-scene { padding: 3.4rem 0.7rem 2.6rem; }
   .br-stage { width: min(calc(100vw - 1.2rem), calc(78dvh * 1080 / 1920)); }
   .br-rail { right: 0.4rem; }
@@ -593,7 +671,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .br-scroll { scroll-behavior: auto; }
+  .br-leaf { transition: none !important; transform: none !important; }
   .br-scene,
   .br-piece,
   .br-piece .br-hit,

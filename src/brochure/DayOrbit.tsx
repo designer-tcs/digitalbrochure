@@ -1,7 +1,7 @@
 import logoMark from "../assets/wellsprings-logo.png";
-import { IconCrop, pageSrc } from "./Piece";
+import { IconCrop } from "./Piece";
 
-const SRC = pageSrc(5);
+const SRC = "/brochure-pages/orbit-icons.jpg";
 
 const NODES: { id: string; label: string; ring: 1 | 2 | 3; angle: number; cx: number; cy: number }[] = [
   { id: "science", label: "Science labs", ring: 1, angle: 0, cx: 0.5158, cy: 0.5157 },
