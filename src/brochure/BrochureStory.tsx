@@ -50,12 +50,13 @@ function CardLift({ src, box }: { src: string; box: Box }) {
 const LAST = SCENES.length - 1;
 
 function SwipeMark({ sceneId }: { sceneId: string }) {
-  if (sceneId === "cover" || sceneId === "visit") return null;
+  if (sceneId === "visit") return null;
   const light = sceneId === "believe" || sceneId === "competing";
+  const cover = sceneId === "cover";
   return (
-    <p className={`br-swipe${light ? " is-light" : ""}`} role="img" aria-label="Swipe for the next page">
+    <p className={`br-swipe${light ? " is-light" : ""}${cover ? " is-cover" : ""}`} role="img" aria-label="Swipe for the next page">
       <span aria-hidden="true">swipe</span>
-      <ArrowRight aria-hidden="true" strokeWidth={2.25} />
+      <ArrowRight aria-hidden="true" strokeWidth={1.6} />
     </p>
   );
 }
