@@ -44,9 +44,18 @@
   touch-action: none;
 }
 
-.br-turn {
+.br-frame {
   position: relative;
-  perspective: 1600px;
+  width: min(calc(100vw - 5.5rem), calc(84dvh * 1080 / 1920));
+  aspect-ratio: 1080 / 1920;
+  overflow: hidden;
+  background: #f7f3ea;
+  box-shadow: 0 28px 70px -32px rgba(36, 24, 12, 0.45);
+}
+
+.br-turn {
+  position: absolute;
+  inset: 0;
   transform-style: preserve-3d;
 }
 
@@ -64,38 +73,21 @@
   opacity: var(--shade, 0);
 }
 
-.br-cast.is-next {
-  background: linear-gradient(to left, rgba(36, 22, 10, 0.34), transparent 58%);
-}
-
+.br-cast.is-next,
 .br-cast.is-prev {
-  background: linear-gradient(to right, rgba(36, 22, 10, 0.34), transparent 58%);
+  background: linear-gradient(to right, rgba(36, 22, 10, 0.28), transparent 62%);
 }
 
 .br-leaf {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  transform-style: preserve-3d;
-  transform-origin: right center;
-  will-change: transform;
-}
-
-.br-leaf-front,
-.br-leaf-back {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  will-change: clip-path;
 }
 
 .br-leaf-front {
-  position: relative;
-  transform: translateZ(0.4px);
-}
-
-.br-leaf-back {
   position: absolute;
   inset: 0;
-  background: #f7f3ea;
-  transform: rotateY(180deg) translateZ(0.4px);
 }
 
 .br-leaf-light {
@@ -104,7 +96,14 @@
   z-index: 6;
   pointer-events: none;
   opacity: var(--shade, 0);
-  background: linear-gradient(90deg, rgba(255, 248, 236, 0.2), transparent 34%, rgba(28, 16, 8, 0.16));
+}
+
+.br-leaf.is-forward .br-leaf-light {
+  background: linear-gradient(to left, rgba(36, 22, 10, 0.28), transparent 16%);
+}
+
+.br-leaf.is-back .br-leaf-light {
+  background: linear-gradient(to right, rgba(36, 22, 10, 0.28), transparent 16%);
 }
 
 .br-scene {
@@ -118,6 +117,7 @@
 }
 
 .br-scene.is-leaf {
+  height: 100%;
   min-height: 0;
   padding: 0;
 }
@@ -128,11 +128,10 @@
 
 .br-stage {
   position: relative;
-  width: min(calc(100vw - 5.5rem), calc(84dvh * 1080 / 1920));
-  aspect-ratio: 1080 / 1920;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   container-type: size;
-  box-shadow: 0 28px 70px -32px rgba(36, 24, 12, 0.45);
 }
 
 .br-base {
@@ -141,6 +140,35 @@
   height: 100%;
   width: 100%;
   object-fit: fill;
+}
+
+.br-swipe {
+  position: absolute;
+  z-index: 1;
+  right: 3.6%;
+  bottom: 1.62%;
+  display: flex;
+  align-items: center;
+  gap: 0.7cqw;
+  margin: 0;
+  color: #3c4450;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.05cqh;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.br-swipe svg {
+  width: 1.35cqh;
+  height: 1.35cqh;
+  margin-right: 0.1cqw;
+}
+
+.br-swipe.is-light {
+  color: #fff;
 }
 
 .br-veil {
@@ -664,14 +692,14 @@
 @media (max-width: 720px) {
   .br-deck { padding: 3.4rem 0.7rem 2.6rem; }
   .br-scene { padding: 3.4rem 0.7rem 2.6rem; }
-  .br-stage { width: min(calc(100vw - 1.2rem), calc(78dvh * 1080 / 1920)); }
+  .br-frame { width: min(calc(100vw - 1.2rem), calc(78dvh * 1080 / 1920)); }
   .br-rail { right: 0.4rem; }
   .br-orbit-icon { height: 18px; width: 18px; }
   .br-orbit-label { font-size: 7px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .br-leaf { transition: none !important; transform: none !important; }
+  .br-leaf { transition: none !important; transform: none !important; clip-path: none !important; }
   .br-scene,
   .br-piece,
   .br-piece .br-hit,

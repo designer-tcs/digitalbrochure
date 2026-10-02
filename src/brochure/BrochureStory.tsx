@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { DayOrbit } from "./DayOrbit";
 import { pageSrc, type Box } from "./Piece";
 import { SCENES, type Layer, type Scene } from "./pages";
@@ -47,6 +48,17 @@ function CardLift({ src, box }: { src: string; box: Box }) {
 }
 
 const LAST = SCENES.length - 1;
+
+function SwipeMark({ sceneId }: { sceneId: string }) {
+  if (sceneId === "cover" || sceneId === "visit") return null;
+  const light = sceneId === "believe" || sceneId === "competing";
+  return (
+    <p className={`br-swipe${light ? " is-light" : ""}`} role="img" aria-label="Swipe for the next page">
+      <span aria-hidden="true">swipe</span>
+      <ArrowRight aria-hidden="true" strokeWidth={2.25} />
+    </p>
+  );
+}
 const TURN_AT = 0.28;
 const FLICK = 0.55;
 
@@ -56,12 +68,12 @@ function prefersStill() {
 
 function pose(progress: number, dir: 1 | -1) {
   const amount = Math.max(0, Math.min(progress, 1));
-  const swing = dir * amount * 180;
-  const bend = Math.sin(amount * Math.PI) * 9;
+  const cut = (amount * 100).toFixed(2);
+  // The page stays a rectangle on the frame. The cut is a straight edge that follows the finger.
+  const clip = dir === 1 ? `inset(0 ${cut}% 0 0)` : `inset(0 0 0 ${cut}%)`;
   return {
-    origin: dir === 1 ? "right center" : "left center",
-    transform: `rotateY(${swing}deg) rotateX(${bend}deg)`,
-    shade: String(Math.sin(amount * Math.PI)),
+    clip,
+    shade: String(Math.sin(amount * Math.PI) * 0.9),
   };
 }
 
@@ -98,6 +110,7 @@ function ScenePage({
               <CardLift key={`${scene.id}-card-${layerIndex}`} src={pageSrc(index + 1)} box={layer.box} />
             ))}
           {scene.orbit && <DayOrbit active={spinning} />}
+          <SwipeMark sceneId={scene.id} />
         </div>
       )}
     </section>
@@ -141,6 +154,7 @@ export function BrochureStory() {
     if (!leaf) return;
     leaf.style.visibility = "";
     leaf.style.transition = "none";
+    leaf.style.clipPath = "";
     leaf.style.transform = "none";
     leaf.style.setProperty("--shade", "0");
     busy.current = false;
@@ -156,9 +170,10 @@ export function BrochureStory() {
     const cast = castRef.current;
     if (!leaf) return;
     const frame = pose(progress, dir);
-    leaf.style.transition = animate ? "transform 560ms cubic-bezier(0.22, 0.7, 0.2, 1)" : "none";
-    leaf.style.transformOrigin = frame.origin;
-    leaf.style.transform = frame.transform;
+    leaf.style.transition = animate ? "clip-path 640ms cubic-bezier(0.22, 0.61, 0.36, 1)" : "none";
+    leaf.style.clipPath = frame.clip;
+    leaf.classList.toggle("is-forward", dir === 1);
+    leaf.classList.toggle("is-back", dir === -1);
     if (cast) {
       cast.style.setProperty("--shade", frame.shade);
       cast.classList.toggle("is-next", dir === 1);
@@ -175,6 +190,7 @@ export function BrochureStory() {
     if (leaf) {
       leaf.style.visibility = "hidden";
       leaf.style.transition = "none";
+      leaf.style.clipPath = "";
       leaf.style.transform = "none";
     }
     progressRef.current = 0;
@@ -227,7 +243,7 @@ export function BrochureStory() {
       start.on = true;
       event.currentTarget.setPointerCapture(event.pointerId);
     }
-    const dir: 1 | -1 = dx >= 0 ? 1 : -1;
+    const dir: 1 | -1 = dx <= 0 ? 1 : -1;
     const allowed = track(dir);
     const travel = Math.abs(dx) / start.width;
     apply(allowed ? Math.min(1, travel) : Math.min(0.1, travel * 0.3), dir, false);
@@ -239,7 +255,7 @@ export function BrochureStory() {
     if (!start?.on) return;
     const dx = event.clientX - start.x;
     const dt = Math.max(1, performance.now() - start.t);
-    const dir: 1 | -1 = dx >= 0 ? 1 : -1;
+    const dir: 1 | -1 = dx <= 0 ? 1 : -1;
     const allowed = canTurn(dir);
     const flicked = Math.abs(dx) > 36 && Math.abs(dx) / dt > FLICK;
     const passed = Math.abs(dx) > start.width * TURN_AT || flicked;
@@ -264,7 +280,7 @@ export function BrochureStory() {
       }
       window.setTimeout(() => {
         if (intent.current === "commit") commit(pending.current);
-      }, 700);
+      }, 900);
       return;
     }
     if (Math.abs(dx) < 2) {
@@ -275,6 +291,16 @@ export function BrochureStory() {
     busy.current = true;
     intent.current = "cancel";
     apply(0, dir, true);
+    window.setTimeout(() => {
+      if (intent.current !== "cancel") return;
+      intent.current = null;
+      showUnder(null);
+      busy.current = false;
+      const leaf = leafRef.current;
+      if (!leaf) return;
+      leaf.style.transition = "none";
+      leaf.style.clipPath = "";
+    }, 900);
   }
 
   function onPointerCancel() {
@@ -286,10 +312,16 @@ export function BrochureStory() {
     busy.current = true;
     intent.current = "cancel";
     apply(0, dirRef.current, true);
+    window.setTimeout(() => {
+      if (intent.current !== "cancel") return;
+      intent.current = null;
+      showUnder(null);
+      busy.current = false;
+    }, 900);
   }
 
   function onLeafEnd(event: React.TransitionEvent<HTMLDivElement>) {
-    if (event.propertyName !== "transform" || event.target !== leafRef.current) return;
+    if (event.propertyName !== "clip-path" || event.target !== leafRef.current) return;
     const leaf = leafRef.current;
     if (!leaf || !intent.current) return;
     if (intent.current === "commit") {
@@ -314,6 +346,9 @@ export function BrochureStory() {
     dirRef.current = dir;
     queued.current = { progress: 1, dir };
     showUnder(target);
+    window.setTimeout(() => {
+      if (intent.current === "commit") commit(pending.current);
+    }, 900);
   }
 
   useEffect(() => {
@@ -344,19 +379,20 @@ export function BrochureStory() {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerCancel}
       >
-        <div className="br-turn">
-          {beneath && (
-            <div className="br-sheet">
-              <ScenePage scene={beneath} index={under!} spinning={false} seen />
-              <div ref={castRef} className={`br-cast ${dirRef.current === 1 ? "is-next" : "is-prev"}`} />
+        <div className="br-frame">
+          <div className="br-turn">
+            {beneath && (
+              <div className="br-sheet">
+                <ScenePage scene={beneath} index={under!} spinning={false} seen />
+                <div ref={castRef} className={`br-cast ${dirRef.current === 1 ? "is-next" : "is-prev"}`} />
+              </div>
+            )}
+            <div ref={leafRef} className="br-leaf" onTransitionEnd={onLeafEnd}>
+              <div className="br-leaf-front">
+                <ScenePage scene={front} index={index} spinning={under == null} seen={index === 0 ? !intro : true} />
+                <div className="br-leaf-light" />
+              </div>
             </div>
-          )}
-          <div ref={leafRef} className="br-leaf" onTransitionEnd={onLeafEnd}>
-            <div className="br-leaf-front">
-              <ScenePage scene={front} index={index} spinning={under == null} seen={index === 0 ? !intro : true} />
-              <div className="br-leaf-light" />
-            </div>
-            <div className="br-leaf-back" aria-hidden="true" />
           </div>
         </div>
       </div>
