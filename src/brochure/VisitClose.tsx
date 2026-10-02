@@ -72,7 +72,7 @@ export function VisitClose() {
           <Mail size={16} strokeWidth={1.8} />
           {SITE_EMAIL}
         </a>
-        <p className="br-visit-admit">Admissions open for 2027–28</p>
+        <p className="br-visit-admit">Admissions open</p>
       </div>
 
       <div className="br-visit-body">
